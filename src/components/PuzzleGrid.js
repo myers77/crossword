@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { map } from 'ramda';
+import { addIndex, map } from 'ramda';
+import keydown from 'react-keydown';
 import mydata from '../../puzzle.json'
 
 const rowStyle = {
@@ -24,12 +25,23 @@ const squareStyleWhite = {
 const gridStyle = {
 }
 
+const mapIndexed = addIndex(map);
+
 class PuzzleGrid extends Component {
-  printRow = row =>
+  constructor() {
+    super();
+    this.state = {
+      activeSquare: [0, 0],
+    }
+  }
+
+  printRow = (row, y) =>
     <div style={rowStyle}>
-      {map(square =>
+      {mapIndexed((square, x) =>
         square === '-'
-        ? <div style={squareStyleWhite}></div>
+        ? <div style={squareStyleWhite}>{
+          (y === this.state.activeSquare[0] || x === this.state.activeSquare[1])
+          ? 'Y' : 'n'}</div>
         : <div style={squareStyleBlack}></div>
       , row)}
     </div>
@@ -37,7 +49,7 @@ class PuzzleGrid extends Component {
   render() {
     return (
       <div style={gridStyle}>
-        {map(row => this.printRow(row), mydata.diagram)}
+        {mapIndexed((row, y) => this.printRow(row, y), mydata.diagram)}
       </div>
     );
   }

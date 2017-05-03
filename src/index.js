@@ -8,6 +8,8 @@ import App from './components/App';
 // Needed for onTouchTap
 injectTapEventPlugin();
 
+window.addEventListener("keyPress", () => console.log('asdf'));
+
 render(
   <MuiThemeProvider>
     <App />
